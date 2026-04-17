@@ -3,29 +3,19 @@ import { CFG } from '../data/config';
 
 export default function Registro({ gameState }) {
   const [parts, setParts] = useState([
-    { nom: '', ced: '' },
-    { nom: '', ced: '' },
-    { nom: '', ced: '' },
-    { nom: '', ced: '' },
     { nom: '', ced: '' }
   ]);
 
   const handleConfirm = () => {
-    const validParts = [];
-    parts.forEach((p, i) => {
-      const nom = p.nom.trim();
-      const ced = p.ced.trim();
-      if (nom) {
-        validParts.push({ nombre: nom, cedula: ced || '—', rol: i === 0 ? 'Líder' : 'Participante' });
-      }
-    });
+    const nom = parts[0].nom.trim();
+    const ced = parts[0].ced.trim();
 
-    if (validParts.length === 0) {
-      alert('Ingresa al menos el nombre del participante.');
+    if (!nom || !ced) {
+      alert('Debes ingresar tanto el nombre como la cédula del participante para poder empezar.');
       return;
     }
     
-    gameState.registerParticipants(validParts);
+    gameState.registerParticipants([{ nombre: nom, cedula: ced, rol: 'Evaluado' }]);
   };
 
   const updatePart = (index, field, value) => {
@@ -46,14 +36,14 @@ export default function Registro({ gameState }) {
       
       <div className="reg-body">
         <div className="reg-desc">
-          📋 Registra el nombre y cédula de cada participante. Al finalizar podrás descargar el reporte en PDF y CSV con todos los datos y respuestas de cada pregunta.
+          📋 Registra el nombre completo y la cédula del participante. Al finalizar se generará un certificado con el reporte detallado de resultados.
         </div>
         
         <div id="reg-participantes">
           {parts.map((p, i) => (
             <div key={i} className="part-block" style={{ borderColor: CFG.color + '33' }}>
               <div className="part-num" style={{ color: CFG.color2 }}>
-                Participante {i + 1} {i === 0 ? ' — Líder' : ''}
+                Datos del Participante
               </div>
               <input 
                 className="inp" 
@@ -83,13 +73,6 @@ export default function Registro({ gameState }) {
           onClick={handleConfirm}
         >
           ✅ Guardar y comenzar
-        </button>
-        
-        <button 
-          className="skip-btn" 
-          onClick={() => gameState.initGame()}
-        >
-          Omitir registro (solo puntaje)
         </button>
       </div>
     </div>
