@@ -73,6 +73,7 @@ export default function Resultado({ gameState }) {
     descargarCSV(gameState, CFG);
   };
 
+  return (
     <div id="resultado" className="screen active" style={bgStyle}>
       <div className="escena-box">
         <ArbolSVG estadoCalidad={estadoCalidad} />
