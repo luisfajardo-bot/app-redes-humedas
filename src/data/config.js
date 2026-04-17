@@ -128,12 +128,12 @@ export const CFG = {
       "titulo": "Replanteo — Paso 1",
       "badge": "Día 2 · Procedimiento",
       "ctx": "El replanteo materializa el diseño en campo: marcar exactamente dónde va la red ANTES de excavar. Se identifican coordenadas en planos, se señaliza con pintura, se traza con hilo o pita de punto a punto y se verifica la distancia entre ejes. Verificación cruzada obligatoria de interferencias con gas, electricidad y telefonía.",
-      "q": "¿Qué herramienta materializa el eje de la tubería en el terreno durante el replanteo?",
+      "q": "¿De qué forma se materializa el eje de la tubería en el terreno durante el replanteo?",
       "opts": [
-        "Retroexcavadora",
-        "Hilo o pita tensada entre estacas",
-        "Nivel de burbuja",
-        "Manómetro calibrado"
+        "Con la retroexcavadora",
+        "Con hilo o pita tensada entre estacas",
+        "Con nivel de burbuja",
+        "Con manómetro calibrado"
       ],
       "cor": 1,
       "fb": "✓ El hilo o pita define el eje exacto de la tubería en el terreno, guiando la excavación y garantizando que la red quede en la ubicación correcta del plano.",
