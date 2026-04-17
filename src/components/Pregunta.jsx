@@ -3,10 +3,10 @@ import { CFG } from '../data/config';
 import MiniSVG from './MiniSVG';
 
 export default function Pregunta({ gameState }) {
-  const { preguntaActiva, answered, lastWasWrong, btnRepair, responder, confirmar } = gameState;
+  const { preguntaActiva, stations, answered, lastWasWrong, btnRepair, responder, confirmar } = gameState;
   
   if (preguntaActiva === null) return null;
-  const s = CFG.stations[preguntaActiva];
+  const s = stations[preguntaActiva];
 
   return (
     <div id="pregunta" className="screen active">

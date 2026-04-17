@@ -3,8 +3,8 @@ import { CFG } from '../data/config';
 import RedSVG from './RedSVG';
 
 export default function Juego({ gameState }) {
-  const total = CFG.stations.length;
-  const { done, fallos, pts, cur, openPreg } = gameState;
+  const total = gameState.stations.length;
+  const { stations, done, fallos, pts, cur, openPreg } = gameState;
   
   const pct = total > 0 ? (done.length / total * 100) : 0;
   
@@ -56,7 +56,7 @@ export default function Juego({ gameState }) {
       </div>
       
       <div className="est-list">
-        {CFG.stations.map((s, i) => {
+        {stations.map((s, i) => {
           const dv = done.includes(i - 1);
           const fv = fallos.includes(i - 1);
           const isAvail = i === cur;
