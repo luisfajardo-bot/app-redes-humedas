@@ -31,8 +31,8 @@ export const CFG = {
       "icon": "📐",
       "titulo": "Pulgada y pendiente",
       "badge": "Día 1 · Módulo 1",
-      "ctx": "Pulgada = 2.54 cm. Un tubo de 4 pulgadas = 10.16 cm de diámetro. Pendiente % = (Altura / Distancia) x 100. En acueducto sirve para válvulas de desaire; en alcantarillado es vital para el flujo por gravedad (velocidad mínima de autolimpieza: 0.6 m/s).",
-      "q": "Un tubo de 6 pulgadas tiene un diámetro real de:",
+      "ctx": "Pulgada = 2.54 cm. Un tubo de 4 pulgadas = 10.16 cm de diámetro. ",
+      "q": "Un tubo de 6 pulgadas tiene un diámetro en cm de:",
       "opts": [
         "12.70 cm",
         "15.24 cm",
@@ -143,15 +143,15 @@ export const CFG = {
       "icon": "⛏️",
       "titulo": "Excavación y cama de arena",
       "badge": "Día 2 · Procedimiento",
-      "ctx": "Profundidad total = 80 cm (rasante a lomo) + diámetro del tubo + 10 cm (cama de arena). Ejemplo tubo 4 pulgadas (10.16 cm): 80+10.16+10 = 100.16 cm, aproximadamente 1.00 m. La cama de arena va en el fondo, libre de piedras. El tubo NUNCA puede descansar sobre roca pelada ni sobre el terreno natural sin cama.",
-      "q": "¿Cuál es la profundidad total de excavación para una tubería de 6 pulgadas (15.24 cm) según la norma EAAB?",
+      "ctx": "El ancho de excavación se basa en 1.7 veces el diametro de la tubería a instalar, pero se tiene un valor mínimo determinado por la EAAB",
+      "q": "¿Cuál es el ancho total de excavación para una tubería de 6 pulgadas (15.24 cm) según la norma EAAB?",
       "opts": [
         "80 cm",
         "95 cm",
         "106 cm",
         "120 cm"
       ],
-      "cor": 2,
+      "cor": 0,
       "fb": "✓ 80 cm + 15.24 cm (diámetro) + 10 cm (cama) = 105.24 cm, aproximadamente 106 cm. Siempre suma los tres componentes.",
       "wfb": "⚠️ Fórmula: 80 + diámetro en cm + 10 cm. Para 6 pulgadas: 80+15.24+10 = 105.24 cm, aproximadamente 106 cm."
     },
@@ -167,9 +167,9 @@ export const CFG = {
         "20 cm sobre el lomo",
         "50 cm sobre el lomo como mínimo"
       ],
-      "cor": 3,
-      "fb": "✓ Mínimo 50 cm de relleno suelto sobre el lomo antes de usar compactadora mecánica. Por debajo, la vibración puede fracturar la tubería o desplazar las uniones.",
-      "wfb": "⚠️ 50 cm mínimo sobre el lomo. Con menos material de protección, la vibración de la compactadora daña la tubería."
+      "cor": 2,
+      "fb": "✓ Mínimo 20 cm de relleno suelto sobre el lomo antes de usar compactadora mecánica. Por debajo, la vibración puede fracturar la tubería o desplazar las uniones.",
+      "wfb": "⚠️ 20 cm mínimo sobre el lomo. Con menos material de protección, la vibración de la compactadora daña la tubería."
     },
     {
       "icon": "💧",
@@ -240,7 +240,7 @@ export const CFG = {
       "titulo": "Red sanitaria vs red pluvial",
       "badge": "Día 3 · Módulo 3",
       "ctx": "Red sanitaria: evacúa aguas negras de viviendas por gravedad. Red pluvial: recoge aguas lluvias de vías y superficies por gravedad. Ambas funcionan por gravedad, diferente al acueducto que es a presión. La pendiente mínima garantiza velocidad de autolimpieza mayor o igual a 0.6 m/s para que los sólidos no se depositen en el tubo.",
-      "q": "¿Cuál es la diferencia fundamental entre el acueducto y el alcantarillado?",
+      "q": "¿Cuál es una diferencia entre el acueducto y el alcantarillado?",
       "opts": [
         "El acueducto usa tubos más grandes",
         "El acueducto es a presión; el alcantarillado funciona por gravedad",
@@ -303,7 +303,7 @@ export const CFG = {
       "icon": "🦺",
       "titulo": "Entibados — Protección de excavaciones",
       "badge": "Día 3 · SST",
-      "ctx": "El entibado sostiene las paredes de la excavación y evita derrumbes, protegiendo a los trabajadores. OBLIGATORIO a partir de 1.50 m de profundidad. Tipos: láminas metálicas (empotramiento mínimo H/3), cajón metálico (prefabricado, reutilizable), paneles deslizantes (avanzan con la excavación), circular (pozos y cámaras). Proceso: preexcavar, colocar paneles, instalar codales, verificar estabilidad y luego ingresa el personal.",
+      "ctx": "El entibado sostiene las paredes de la excavación y evita derrumbes, protegiendo a los trabajadores. OBLIGATORIO a partir de 1.20 m de profundidad. Tipos: láminas metálicas (empotramiento mínimo H/3), cajón metálico (prefabricado, reutilizable), paneles deslizantes (avanzan con la excavación), circular (pozos y cámaras). Proceso: preexcavar, colocar paneles, instalar codales, verificar estabilidad y luego ingresa el personal.",
       "q": "¿A partir de qué profundidad de excavación es OBLIGATORIO instalar un sistema de entibado según las normas de SST?",
       "opts": [
         "0.80 m",
@@ -311,9 +311,9 @@ export const CFG = {
         "1.50 m",
         "2.00 m"
       ],
-      "cor": 2,
-      "fb": "✓ El entibado es obligatorio desde 1.50 m de profundidad. Un derrumbe a esa profundidad puede ser fatal: el peso del suelo sobre un trabajador supera varias toneladas.",
-      "wfb": "⚠️ A partir de 1.50 m el entibado es obligatorio. El suelo puede derrumbarse sin aviso previo."
+      "cor": 1,
+      "fb": "✓ El entibado es obligatorio desde 1.20 m de profundidad. Un derrumbe a esa profundidad puede ser fatal: el peso del suelo sobre un trabajador supera varias toneladas.",
+      "wfb": "⚠️ A partir de 1.20 m el entibado es obligatorio. El suelo puede derrumbarse sin aviso previo."
     },
     {
       "icon": "📐",
@@ -323,7 +323,7 @@ export const CFG = {
       "q": "En un plano de alcantarillado, ¿qué indica la cota batea?",
       "opts": [
         "El nombre del barrio donde va la red",
-        "La altura del fondo interior del tubo, por donde fluye el agua",
+        "La cota al fondo interior del tubo, por donde fluye el agua",
         "El ancho de la zanja de excavación",
         "La presión máxima de diseño de la red"
       ],
