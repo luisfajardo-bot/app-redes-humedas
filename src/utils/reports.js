@@ -3,9 +3,14 @@ export function descargarPDF(gameState, CFG) {
   const total = CFG.stations.length;
   const sinFugas = fallos.length === 0;
   const pct = Math.round((1 - fallos.length / total) * 100);
+  
+  let estadoCalidad = 'bueno';
+  if (pct <= 80) estadoCalidad = 'malo';
+  else if (pct < 90) estadoCalidad = 'regular';
+
   const ahora = new Date().toLocaleString('es-CO');
   const G_COLOR = CFG.color;
-  const cOk = sinFugas ? G_COLOR : '#c03020';
+  const cOk = estadoCalidad === 'bueno' ? G_COLOR : estadoCalidad === 'regular' ? '#b07000' : '#c03020';
 
   let partRows = '';
   if (participantes.length > 0) {
@@ -54,10 +59,10 @@ export function descargarPDF(gameState, CFG) {
     `<td style="font-weight:700;color:${G_COLOR};width:80px">Fecha:</td><td>${ahora}</td>` +
     '</tr><tr>' +
     `<td style="font-weight:700;color:${G_COLOR}">Puntuación:</td><td style="font-size:15px;font-weight:700;color:${cOk}">${pts} pts</td>` +
-    `<td style="font-weight:700;color:${G_COLOR}">Calidad:</td><td style="font-weight:700;color:${pct >= 85 ? G_COLOR : pct >= 60 ? '#b07000' : '#c03020'}">${pct}% ${pct >= 85 ? '✅ Excelente' : pct >= 60 ? '⚠️ Regular' : '❌ Debe mejorar'}</td>` +
+    `<td style="font-weight:700;color:${G_COLOR}">Calidad:</td><td style="font-weight:700;color:${cOk}">${pct}% ${estadoCalidad === 'bueno' ? '✅ Excelente' : estadoCalidad === 'regular' ? '⚠️ Funcional' : '❌ Debe mejorar'}</td>` +
     '</tr><tr>' +
     `<td style="font-weight:700;color:${G_COLOR}">Red:</td>` +
-    `<td colspan="3" style="font-weight:700;color:${cOk}">${sinFugas ? '🌳 Instalada correctamente — Sin fugas — NC-025 cumplida' : `🥀 Con ${fallos.length} fuga(s) — Requiere reparación`}</td>` +
+    `<td colspan="3" style="font-weight:700;color:${cOk}">${estadoCalidad === 'bueno' ? '🌳 Instalada correctamente — Sin fugas — NC-025 cumplida' : estadoCalidad === 'regular' ? '🌿 Funcional con fugas' : `🥀 Con ${fallos.length} fuga(s) — Requiere reparación`}</td>` +
     '</tr></table></div>' +
     '<h3>👥 Participantes</h3>' +
     `<table><thead><tr><th>#</th><th>Nombre completo</th><th>Número de cédula</th><th>Rol</th></tr></thead><tbody>${partRows}</tbody></table>` +
@@ -81,6 +86,10 @@ export function descargarCSV(gameState, CFG) {
   const total = CFG.stations.length;
   const sinFugas = fallos.length === 0;
   const pct = Math.round((1 - fallos.length / total) * 100);
+  let estadoCalidad = 'bueno';
+  if (pct <= 80) estadoCalidad = 'malo';
+  else if (pct < 90) estadoCalidad = 'regular';
+  
   const ahora = new Date().toLocaleString('es-CO');
 
   const esc = (v) => {
@@ -91,7 +100,7 @@ export function descargarCSV(gameState, CFG) {
   let rows = [
     [`REPORTE DE RESULTADOS — ${(CFG.titulo || 'Redes Húmedas').toUpperCase()}`],
     ['Manos que Transforman_ICEIN · Universidad de los Andes'],
-    ['Fecha', ahora, 'Puntuación', pts, 'Calidad', `${pct}%`, 'Fugas', fallos.length, 'Estado', sinFugas ? 'Sin fugas' : 'Con fugas'],
+    ['Fecha', ahora, 'Puntuación', pts, 'Calidad', `${pct}%`, 'Fugas', fallos.length, 'Estado', estadoCalidad === 'bueno' ? 'Sin fugas' : estadoCalidad === 'regular' ? 'Funcional con fugas' : 'Red dañada'],
     [], ['PARTICIPANTES'], ['#', 'Nombre completo', 'Cédula', 'Rol']
   ];
 

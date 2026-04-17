@@ -44,11 +44,19 @@ export default function AdminDashboard({ gameState }) {
       return (s.indexOf(',') >= 0 || s.indexOf('"') >= 0 || s.indexOf('\n') >= 0) ? `"${s.replace(/"/g, '""')}"` : s;
     };
 
+    let headers = [
+      'Fecha', 'Participantes', 'Puntuación', 'Calidad', 'Fugas', 'Estado'
+    ];
+
+    CFG.stations.forEach((s, i) => {
+      headers.push(`P${i+1}: ${s.q}`);
+    });
+
     let rows = [
-      [`REPORTE CONSOLIDADO DE RESULTADOS — ${(CFG.titulo || 'Redes Húmedas').toUpperCase()}`],
+      [`REPORTE CONSOLIDADO CON DETALLES — ${(CFG.titulo || 'Redes Húmedas').toUpperCase()}`],
       ['Manos que Transforman_ICEIN · Universidad de los Andes'],
       [],
-      ['Fecha', 'Participantes', 'Puntuación', 'Calidad', 'Fugas', 'Estado']
+      headers
     ];
 
     resultados.forEach(res => {
@@ -59,16 +67,29 @@ export default function AdminDashboard({ gameState }) {
       const total = CFG.stations.length;
       const numFallos = res.fallos ? res.fallos.length : 0;
       const pct = Math.round((1 - numFallos / total) * 100);
-      const sinFugas = numFallos === 0;
+      
+      let estadoCalidad = 'bueno';
+      if (pct <= 80) estadoCalidad = 'malo';
+      else if (pct < 90) estadoCalidad = 'regular';
 
-      rows.push([
+      const rowData = [
         new Date(res.fecha).toLocaleString('es-CO'),
         parts,
         res.pts,
         `${pct}%`,
         numFallos,
-        sinFugas ? 'Sin fugas' : 'Con fugas'
-      ]);
+        estadoCalidad === 'bueno' ? 'Sin fugas' : estadoCalidad === 'regular' ? 'Funcional con fugas' : 'Red dañada'
+      ];
+
+      CFG.stations.forEach((s, idx) => {
+        const ef = res.fallos ? res.fallos.includes(idx) : false;
+        const isDone = res.done ? res.done.includes(idx) : false;
+
+        // Si falló o no la respondió (pendiente), le damos 0. Si la hizo bien, 1.
+        rowData.push(!isDone || ef ? 0 : 1);
+      });
+
+      rows.push(rowData);
     });
 
     const csv = rows.map(r => r.map(esc).join(',')).join('\n');

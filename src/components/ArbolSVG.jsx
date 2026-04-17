@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CFG } from '../data/config';
 
-export default function ArbolSVG({ sinFugas }) {
+export default function ArbolSVG({ estadoCalidad }) {
   const [step, setStep] = useState(0);
 
   useEffect(() => {
@@ -17,7 +17,10 @@ export default function ArbolSVG({ sinFugas }) {
     return () => { [t1,t2,t3,t4,t5,t6,t7].forEach(clearTimeout); };
   }, []);
 
-  if (sinFugas) {
+  const isBueno = estadoCalidad === 'bueno';
+  const isRegular = estadoCalidad === 'regular';
+
+  if (isBueno || isRegular) {
     return (
       <svg viewBox="0 0 380 260" style={{ width: '100%', display: 'block' }}>
         <defs>
@@ -49,7 +52,7 @@ export default function ArbolSVG({ sinFugas }) {
           {cx:190, cy:128, rx:20, ry:15, fill:'#5ade38', d:'1.6s'}
         ].map((h, i) => <ellipse key={i} cx={h.cx} cy={h.cy} rx={h.rx} ry={h.ry} fill={h.fill} opacity=".92" style={{ transformOrigin: `${h.cx}px 240px`, animation: `hoja-ap .5s ease-out ${h.d} both` }} />)}
 
-        {step >= 6 && [
+        {isBueno && step >= 6 && [
           [180,148],[204,145],[175,165],[208,162],[190,132]
         ].map((f, i) => <circle key={i} cx={f[0]} cy={f[1]} r="4.5" fill="#e03020" opacity=".9" />)}
 
@@ -66,10 +69,12 @@ export default function ArbolSVG({ sinFugas }) {
         {step >= 7 && (
           <>
             <Personas f={true} list={[{x:58}, {x:278}, {x:318}]} />
-            {[
+            {isBueno && [
               ['⭐',235,46], ['✨',258,28], ['🌟',338,42], ['💧',348,66], ['🍃',318,24]
             ].map((s, i) => <text key={i} x={s[1]} y={s[2]} textAnchor="middle" fontSize="13" fontFamily="sans-serif" style={{ animation: `hoja-ap .4s ease-out ${0.2+i*0.15}s both` }}>{s[0]}</text>)}
-            <text x="190" y="20" textAnchor="middle" fontSize="10" fontFamily="sans-serif" fill="#4cde9a" fontWeight="bold" style={{ animation: 'hoja-ap .5s ease-out .8s both' }}>✅ Red perfecta · Agua para todos · NC-025 cumplida</text>
+            <text x="190" y="20" textAnchor="middle" fontSize="10" fontFamily="sans-serif" fill={isBueno ? "#4cde9a" : "#f0d020"} fontWeight="bold" style={{ animation: 'hoja-ap .5s ease-out .8s both' }}>
+              {isBueno ? '✅ Red perfecta · Agua para todos · NC-025 cumplida' : '⚠️ Red funcional pero con pérdidas'}
+            </text>
           </>
         )}
       </svg>

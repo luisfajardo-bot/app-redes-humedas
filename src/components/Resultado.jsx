@@ -37,20 +37,27 @@ export default function Resultado({ gameState }) {
   }, [participantes, pts, fallos, historial, done]);
   const total = CFG.stations.length;
   
-  const sinFugas = fallos.length === 0;
   const pct = Math.round((1 - fallos.length/total) * 100);
+  
+  let estadoCalidad = 'bueno';
+  if (pct <= 80) estadoCalidad = 'malo';
+  else if (pct < 90) estadoCalidad = 'regular';
 
-  const bgStyle = sinFugas 
+  const sinFugas = fallos.length === 0;
+
+  const bgStyle = estadoCalidad === 'bueno' 
     ? { background: 'linear-gradient(170deg,#041a0c,#082a14,#041008)' }
-    : { background: 'linear-gradient(170deg,#1a0e04,#2a1808,#100a02)' };
+    : estadoCalidad === 'regular'
+      ? { background: 'linear-gradient(170deg,#1a1a04,#2a2a08,#101002)' }
+      : { background: 'linear-gradient(170deg,#1a0e04,#2a1808,#100a02)' };
 
   const rows = [
     { l: 'Participantes', v: participantes.length > 0 ? participantes.map(p => p.nombre).join(', ') : 'No registrados', c: 'ok' },
-    { l: 'Tramos correctos', v: `${total - fallos.length}/${total}`, c: fallos.length === 0 ? 'ok' : fallos.length <= 2 ? 'warn' : 'bad' },
+    { l: 'Tramos correctos', v: `${total - fallos.length}/${total}`, c: estadoCalidad === 'bueno' ? 'ok' : estadoCalidad === 'regular' ? 'warn' : 'bad' },
     { l: 'Fugas detectadas', v: `${fallos.length}`, c: fallos.length === 0 ? 'ok' : 'bad' },
     { l: 'Norma NC-025', v: sinFugas ? '✓ Cumplida' : '✗ Incumplida', c: sinFugas ? 'ok' : 'bad' },
-    { l: 'Calidad', v: `${pct}%`, c: pct >= 85 ? 'ok' : pct >= 60 ? 'warn' : 'bad' },
-    { l: 'Estado', v: sinFugas ? '✅ Operativo' : '🔴 Con fallas', c: sinFugas ? 'ok' : 'bad' }
+    { l: 'Calidad', v: `${pct}%`, c: estadoCalidad === 'bueno' ? 'ok' : estadoCalidad === 'regular' ? 'warn' : 'bad' },
+    { l: 'Estado', v: estadoCalidad === 'bueno' ? '✅ Operativo' : estadoCalidad === 'regular' ? '⚠️ Con fugas' : '🔴 Red dañada', c: estadoCalidad === 'bueno' ? 'ok' : estadoCalidad === 'regular' ? 'warn' : 'bad' }
   ];
 
   if (fallos.length > 0) {
@@ -66,20 +73,21 @@ export default function Resultado({ gameState }) {
     descargarCSV(gameState, CFG);
   };
 
-  return (
     <div id="resultado" className="screen active" style={bgStyle}>
       <div className="escena-box">
-        <ArbolSVG sinFugas={sinFugas} />
+        <ArbolSVG estadoCalidad={estadoCalidad} />
       </div>
       
-      <div className="res-titulo" style={{ color: sinFugas ? CFG.color2 : '#e24b4a' }}>
-        {sinFugas ? '🌳 ¡Red perfecta!' : '🥀 Red con fugas'}
+      <div className="res-titulo" style={{ color: estadoCalidad === 'bueno' ? CFG.color2 : estadoCalidad === 'regular' ? '#f0d020' : '#e24b4a' }}>
+        {estadoCalidad === 'bueno' ? '🌳 ¡Red perfecta!' : estadoCalidad === 'regular' ? '⚠️ Red con fugas' : '🥀 Red dañada'}
       </div>
       
       <div className="res-msg">
-        {sinFugas
-          ? '¡Excelente! La red está instalada correctamente, sin fugas. El árbol florece y el agua llega a todos los hogares.'
-          : `La red tiene ${fallos.length} tramo(s) con fuga. El árbol se seca sin agua. ¡Repasa los temas fallidos!`
+        {estadoCalidad === 'malo'
+          ? `La red tiene ${fallos.length} tramo(s) con fuga. El árbol se seca sin agua. ¡Repasa los temas fallidos!`
+          : estadoCalidad === 'regular'
+            ? 'La red tiene fugas y está perdiendo agua, pero sigue funcionando. El árbol está un poco florecido, pero sin frutos ni mucho verde.'
+            : '¡Excelente! El árbol ha florecido y tiene unas buenas bases de conocimiento sobre las redes húmedas.'
         }
       </div>
       
