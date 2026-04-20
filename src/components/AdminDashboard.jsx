@@ -45,7 +45,7 @@ export default function AdminDashboard({ gameState }) {
     };
 
     let headers = [
-      'Fecha', 'Participantes', 'Puntuación', 'Calidad', 'Fugas', 'Estado'
+      'Fecha', 'Participantes', 'Cédula(s)', 'Puntuación', 'Calidad', 'Fugas', 'Estado'
     ];
 
     CFG.stations.forEach((s, i) => {
@@ -60,10 +60,13 @@ export default function AdminDashboard({ gameState }) {
     ];
 
     resultados.forEach(res => {
-      const parts = res.participantes && res.participantes.length > 0
+      const nombres = res.participantes && res.participantes.length > 0
         ? res.participantes.map(p => p.nombre).join(' / ')
         : 'No registrados';
-      
+      const cedulas = res.participantes && res.participantes.length > 0
+        ? res.participantes.map(p => p.cedula || 'Sin cédula').join(' / ')
+        : '—';
+
       const total = CFG.stations.length;
       const numFallos = res.fallos ? res.fallos.length : 0;
       const pct = Math.round((1 - numFallos / total) * 100);
@@ -74,7 +77,8 @@ export default function AdminDashboard({ gameState }) {
 
       const rowData = [
         new Date(res.fecha).toLocaleString('es-CO'),
-        parts,
+        nombres,
+        cedulas,
         res.pts,
         `${pct}%`,
         numFallos,
@@ -153,6 +157,7 @@ export default function AdminDashboard({ gameState }) {
                   <tr style={{ background: CFG.color, color: '#fff' }}>
                     <th style={{ padding: '10px' }}>Fecha</th>
                     <th style={{ padding: '10px' }}>Participantes</th>
+                    <th style={{ padding: '10px' }}>Cédula(s)</th>
                     <th style={{ padding: '10px' }}>Puntaje</th>
                     <th style={{ padding: '10px' }}>Fugas</th>
                     <th style={{ padding: '10px' }}>Acción</th>
@@ -170,7 +175,12 @@ export default function AdminDashboard({ gameState }) {
                       <tr key={res.id} style={{ borderBottom: '1px solid #eee' }}>
                         <td style={{ padding: '10px' }}>{new Date(res.fecha).toLocaleString()}</td>
                         <td style={{ padding: '10px' }}>
-                          {res.participantes && res.participantes.length > 0 ? res.participantes.map(p => p.nombre).join(' / ') : 'Anonimo'}
+                          {res.participantes && res.participantes.length > 0 ? res.participantes.map(p => p.nombre).join(' / ') : 'Anónimo'}
+                        </td>
+                        <td style={{ padding: '10px', color: '#555' }}>
+                          {res.participantes && res.participantes.length > 0
+                            ? res.participantes.map(p => p.cedula || '—').join(' / ')
+                            : '—'}
                         </td>
                         <td style={{ padding: '10px', fontWeight: 'bold' }}>{res.pts}</td>
                         <td style={{ padding: '10px', color: res.fallos && res.fallos.length > 0 ? '#e24b4a' : CFG.color2 }}>
